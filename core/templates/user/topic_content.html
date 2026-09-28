@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ topic.topic_title }}</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+        }
+        .card {
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <span class="navbar-brand">AI Learning Platform</span>
+        <a href="{% url 'courses' %}" class="btn btn-outline-light">Courses</a>
+    </div>
+</nav>
+
+<!-- Content -->
+<div class="container mt-5">
+    <div class="card shadow p-4">
+
+        <h2 class="mb-3">{{ topic.topic_title }}</h2>
+
+        <p class="text-muted">
+            Study the content carefully before starting the assessment.
+        </p>
+
+        <!-- Learning Content -->
+        <div class="mb-4">
+            <h5>📘 Learning Content</h5>
+            <a href="{{ topic.content_link }}" target="_blank" class="btn btn-primary">
+                Open Learning Material
+            </a>
+        </div>
+
+        <!-- Assessment Button -->
+        <div class="text-center mt-4">
+            <a href="{% url 'start_assessment' assessment.id %}" class="btn btn-success btn-lg">
+                Start Assessment
+            </a>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

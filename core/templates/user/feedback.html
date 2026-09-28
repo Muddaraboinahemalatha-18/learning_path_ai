@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Course Feedback</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            min-height: 100vh;
+        }
+
+        .feedback-card {
+            border-radius: 20px;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .star-rating i {
+            font-size: 28px;
+            cursor: pointer;
+            color: #ddd;
+        }
+
+        .star-rating i.active {
+            color: #ffc107;
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container">
+        <span class="navbar-brand fw-bold">Course Feedback</span>
+    </div>
+</nav>
+
+<!-- FEEDBACK FORM -->
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+    <div class="col-md-6">
+        <div class="card feedback-card shadow-lg p-5">
+
+            <h3 class="text-center fw-bold mb-4">
+                ⭐ Share Your Feedback
+            </h3>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <!-- Rating -->
+                <div class="mb-4 text-center">
+                    <label class="form-label fw-semibold d-block mb-2">
+                        Rate this course
+                    </label>
+
+                    <div class="star-rating">
+                        {% for i in "12345" %}
+                        <i class="bi bi-star-fill"
+                           onclick="setRating({{ forloop.counter }})"
+                           id="star{{ forloop.counter }}"></i>
+                        {% endfor %}
+                    </div>
+
+                    <input type="hidden" name="rating" id="rating" required>
+                </div>
+
+                <!-- Comment -->
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">
+                        Your Comment
+                    </label>
+                    <textarea name="comment" class="form-control" rows="4"
+                              placeholder="Write your feedback here..."></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100 btn-lg">
+                    Submit Feedback
+                </button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- JS for star rating -->
+<script>
+    function setRating(value) {
+        document.getElementById('rating').value = value;
+
+        for (let i = 1; i <= 5; i++) {
+            document.getElementById('star' + i).classList.remove('active');
+        }
+        for (let i = 1; i <= value; i++) {
+            document.getElementById('star' + i).classList.add('active');
+        }
+    }
+</script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

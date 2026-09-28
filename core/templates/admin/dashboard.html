@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f4f6f9;
+        }
+        .card {
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <span class="navbar-brand fw-bold">AI Learning Platform - Admin</span>
+        <div>
+            
+            <a href="{% url 'add_course' %}" class="btn btn-outline-primary btn-sm ms-2">
+    + Add Course
+</a>
+<a href="{% url 'add_topic' %}" class="btn btn-outline-info btn-sm ms-2">
+    + Add Topic
+</a>
+<a href="{% url 'add_assessment' %}" class="btn btn-outline-warning btn-sm ms-2">
+    + Add Assessment
+</a>
+<a href="{% url 'add_question' %}" class="btn btn-outline-light btn-sm">
+                + Add Questions
+            </a>
+
+
+            <a href="/" class="btn btn-danger btn-sm ms-2">
+                Logout
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="container mt-5">
+
+    <h3 class="mb-4">Admin Dashboard</h3>
+
+    <!-- SUMMARY CARDS -->
+    <div class="row text-center mb-4">
+
+        <div class="col-md-3">
+            <div class="card shadow p-3">
+                <h6>Total Users</h6>
+                <h3 class="text-primary">{{ users.count }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow p-3">
+                <h6>Total Enrollments</h6>
+                <h3 class="text-success">{{ enrollments.count }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow p-3">
+                <h6>Total Attempts</h6>
+                <h3 class="text-warning">{{ scores.count }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow p-3">
+                <h6>Total Feedback</h6>
+                <h3 class="text-danger">{{ feedbacks.count }}</h3>
+            </div>
+        </div>
+
+    </div>
+    <div class="row mt-4">
+
+    <div class="col-md-3">
+        <a href="{% url 'manage_courses' %}" class="btn btn-primary w-100 mb-3">
+            Manage Courses
+        </a>
+    </div>
+
+    <div class="col-md-3">
+        <a href="{% url 'manage_topics' %}" class="btn btn-info w-100 mb-3">
+            Manage Topics
+        </a>
+    </div>
+
+    <div class="col-md-3">
+        <a href="{% url 'manage_assessments' %}" class="btn btn-warning w-100 mb-3">
+            Manage Assessments
+        </a>
+    </div>
+
+    <div class="col-md-3">
+        <a href="{% url 'manage_questions' %}" class="btn btn-success w-100 mb-3">
+            Manage Questions
+        </a>
+    </div>
+    <div class="col-md-3">
+        <a href="{% url 'manage_users' %}" class="btn btn-success w-100 mb-3">
+            Manage Users
+        </a>
+    </div>
+
+</div>
+
+
+
+    <!-- USERS TABLE -->
+    <div class="card shadow p-4 mb-4">
+        <h5 class="mb-3">👤 Registered Users</h5>
+        <table class="table table-bordered table-hover">
+            <tr class="table-dark">
+                <th>#</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Verified</th>
+            </tr>
+            {% for u in users %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ u.username }}</td>
+                <td>{{ u.email }}</td>
+                <td>
+                    {% if u.is_verified %}
+                        <span class="badge bg-success">Yes</span>
+                    {% else %}
+                        <span class="badge bg-danger">No</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- FEEDBACK TABLE -->
+    <div class="card shadow p-4">
+        <h5 class="mb-3">⭐ Course Feedback</h5>
+        <table class="table table-striped table-bordered">
+            <tr class="table-dark">
+                <th>#</th>
+                <th>User</th>
+                <th>Course</th>
+                <th>Rating</th>
+                <th>Comment</th>
+            </tr>
+            {% for f in feedbacks %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ f.user.username }}</td>
+                <td>{{ f.course.course_name }}</td>
+                <td>{{ f.rating }}/5</td>
+                <td>{{ f.comment|default:"-" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center">No feedback available</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Topic</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <span class="navbar-brand">Admin - Add Topic</span>
+        <a href="{% url 'admin_dashboard' %}" class="btn btn-outline-light btn-sm">
+            Back
+        </a>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <div class="card shadow p-4">
+
+        <h4 class="mb-3">Add New Topic</h4>
+
+        {% if success %}
+            <div class="alert alert-success">{{ success }}</div>
+        {% endif %}
+
+        <!-- STEP 1: SELECT COURSE -->
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label>Select Course</label>
+                <select name="course" class="form-control" onchange="this.form.submit()" required>
+                    <option value="">-- Select Course --</option>
+                    {% for c in courses %}
+                        <option value="{{ c.id }}"
+                            {% if selected_course and selected_course.id == c.id %}selected{% endif %}
+                        >
+                            {{ c.course_name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </form>
+
+        {% if selected_course %}
+        <!-- COURSE LABEL -->
+        <div class="alert alert-info">
+            Selected Course: <strong>{{ selected_course.course_name }}</strong>
+        </div>
+
+        <!-- STEP 2: ADD TOPIC -->
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="course" value="{{ selected_course.id }}">
+
+            <div class="mb-3">
+                <label>Topic Title</label>
+                <input type="text" name="topic_title" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label>Content Link (Video / PDF)</label>
+                <input type="url" name="content_link" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label>Topic Order</label>
+                <input type="number" name="order" class="form-control" required>
+            </div>
+
+            <button class="btn btn-info w-100">
+                Add Topic
+            </button>
+        </form>
+        {% endif %}
+
+    </div>
+</div>
+
+</body>
+</html>
